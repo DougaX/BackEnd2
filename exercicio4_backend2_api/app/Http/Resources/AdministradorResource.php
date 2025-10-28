@@ -13,9 +13,8 @@ class AdministradorResource extends JsonResource
             'id' => $this->id,
             'nome' => $this->nome,
             'email' => $this->email,
-            // Não retorna senha por segurança
-            'created_at' => $this->created_at->format('d/m/Y H:i:s'),
-            'updated_at' => $this->updated_at->format('d/m/Y H:i:s'),
+            'created_at' => $this->created_at ? $this->created_at->format('d/m/Y H:i:s') : null,
+            'updated_at' => $this->updated_at ? $this->updated_at->format('d/m/Y H:i:s') : null,
         ];
     }
 }

@@ -14,8 +14,8 @@ class ProfessorResource extends JsonResource
             'nome' => $this->nome,
             'email' => $this->email,
             'departamento' => $this->departamento,
-            'created_at' => $this->created_at->format('d/m/Y H:i:s'),
-            'updated_at' => $this->updated_at->format('d/m/Y H:i:s'),
+            'created_at' => $this->created_at ? $this->created_at->format('d/m/Y H:i:s') : null,
+            'updated_at' => $this->updated_at ? $this->updated_at->format('d/m/Y H:i:s') : null,
         ];
     }
 }
