@@ -8,7 +8,7 @@ class UpdateSalaRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return true; // CERTIFIQUE-SE QUE ESTÁ TRUE!
     }
 
     public function rules(): array

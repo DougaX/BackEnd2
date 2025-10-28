@@ -8,14 +8,14 @@ class UpdateAdministradorRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        return true; // CERTIFIQUE-SE QUE ESTÁ TRUE!
     }
 
     public function rules(): array
     {
         return [
             'nome' => 'required|string|max:255',
-            'email' => 'required|email|unique:administradores,email,' . $this->route('administradore'),
+            'email' => 'required|email|unique:administradores,email,' . $this->route('id'),
             'senha' => 'nullable|string|min:6'
         ];
     }
