@@ -2,10 +2,14 @@
 namespace Daoo\Aula02;
 
 require_once __DIR__ . '/Pessoa.php';
+require_once __DIR__ . '/IMC.php';
 
 class Atleta extends Pessoa
 {
+    use IMC;
+
     private string $modalidade;
+    private ?float $imc = null;
 
     public function __construct(string $nome, int $idade, float $peso, float $altura, string $profissao, string $modalidade)
     {
@@ -20,6 +24,6 @@ class Atleta extends Pessoa
 
     public function __toString(): string
     {
-        return parent::__toString() . ", Modalidade: {$this->modalidade}";
+        return parent::__toString() . ", Modalidade: {$this->modalidade}, Classificação: {$this->classifica()}";
     }
 }
