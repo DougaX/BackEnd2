@@ -11,18 +11,12 @@ use Illuminate\Http\JsonResponse;
 
 class SalaApiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $salas = Sala::all();
         return SalaResource::collection($salas);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreSalaRequest $request): JsonResponse
     {
         $sala = Sala::create($request->validated());
@@ -33,19 +27,15 @@ class SalaApiController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Sala $sala)
+    public function show($id)
     {
+        $sala = Sala::findOrFail($id);
         return new SalaResource($sala);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateSalaRequest $request, Sala $sala): JsonResponse
+    public function update(UpdateSalaRequest $request, $id): JsonResponse
     {
+        $sala = Sala::findOrFail($id);
         $sala->update($request->validated());
         
         return response()->json([
@@ -54,11 +44,9 @@ class SalaApiController extends Controller
         ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Sala $sala): JsonResponse
+    public function destroy($id): JsonResponse
     {
+        $sala = Sala::findOrFail($id);
         $sala->delete();
         
         return response()->json([

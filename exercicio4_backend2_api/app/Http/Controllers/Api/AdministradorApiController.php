@@ -11,18 +11,12 @@ use Illuminate\Http\JsonResponse;
 
 class AdministradorApiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $administradores = Administrador::all();
         return AdministradorResource::collection($administradores);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreAdministradorRequest $request): JsonResponse
     {
         $administrador = Administrador::create($request->validated());
@@ -33,19 +27,16 @@ class AdministradorApiController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Administrador $administrador)
+    public function show($id)
     {
+        $administrador = Administrador::findOrFail($id);
         return new AdministradorResource($administrador);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateAdministradorRequest $request, Administrador $administrador): JsonResponse
+    public function update(UpdateAdministradorRequest $request, $id): JsonResponse
     {
+        $administrador = Administrador::findOrFail($id);
+        
         $dados = $request->validated();
         
         // Remove senha do array se não foi fornecida
@@ -61,11 +52,9 @@ class AdministradorApiController extends Controller
         ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Administrador $administrador): JsonResponse
+    public function destroy($id): JsonResponse
     {
+        $administrador = Administrador::findOrFail($id);
         $administrador->delete();
         
         return response()->json([

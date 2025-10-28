@@ -36,23 +36,25 @@ class ProfessorApiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Professor $professor)
-    {
-        return new ProfessorResource($professor);
-    }
+public function show($id)
+{
+    $professor = Professor::findOrFail($id);
+    return new ProfessorResource($professor);
+}
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProfessorRequest $request, Professor $professor): JsonResponse
-    {
-        $professor->update($request->validated());
-        
-        return response()->json([
-            'message' => 'Professor atualizado com sucesso!',
-            'data' => new ProfessorResource($professor)
-        ], 200);
-    }
+    public function update(UpdateProfessorRequest $request, $id): JsonResponse
+{
+    $professor = Professor::findOrFail($id);
+    $professor->update($request->validated());
+    
+    return response()->json([
+        'message' => 'Professor atualizado com sucesso!',
+        'data' => new ProfessorResource($professor)
+    ], 200);
+}
 
     /**
      * Remove the specified resource from storage.
