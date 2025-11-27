@@ -34,11 +34,10 @@ class DatabaseSeeder extends Seeder
             'role' => 'user',
         ]);
 
-        // Seeders anteriores
         $this->call([
             ProfessorSeeder::class,
             AdministradorSeeder::class,
             SalaSeeder::class,
         ]);
     }
-} 
+}
