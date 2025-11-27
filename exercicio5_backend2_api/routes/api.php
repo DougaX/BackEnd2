@@ -1,27 +1,70 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\Api\ProfessorApiController;
 use App\Http\Controllers\Api\AdministradorApiController;
 use App\Http\Controllers\Api\SalaApiController;
 
-// Professores
-Route::get('professores', [ProfessorApiController::class, 'index']);
-Route::post('professores', [ProfessorApiController::class, 'store']);
-Route::get('professores/{id}', [ProfessorApiController::class, 'show']);
-Route::put('professores/{id}', [ProfessorApiController::class, 'update']);
-Route::delete('professores/{id}', [ProfessorApiController::class, 'destroy']);
+// ============================================
+// ROTAS PÚBLICAS (sem autenticação)
+// ============================================
 
-// Administradores
-Route::get('administradores', [AdministradorApiController::class, 'index']);
-Route::post('administradores', [AdministradorApiController::class, 'store']);
-Route::get('administradores/{id}', [AdministradorApiController::class, 'show']);
-Route::put('administradores/{id}', [AdministradorApiController::class, 'update']);
-Route::delete('administradores/{id}', [AdministradorApiController::class, 'destroy']);
+// Autenticação - Login (público)
+Route::post('/login', [AuthController::class, 'login']);
 
-// Salas
-Route::get('salas', [SalaApiController::class, 'index']);
-Route::post('salas', [SalaApiController::class, 'store']);
-Route::get('salas/{id}', [SalaApiController::class, 'show']);
-Route::put('salas/{id}', [SalaApiController::class, 'update']);
-Route::delete('salas/{id}', [SalaApiController::class, 'destroy']);
+// Rotas GET públicas - Listar e visualizar
+Route::get('/professores', [ProfessorApiController::class, 'index']);
+Route::get('/professores/{id}', [ProfessorApiController::class, 'show']);
+
+Route::get('/administradores', [AdministradorApiController::class, 'index']);
+Route::get('/administradores/{id}', [AdministradorApiController::class, 'show']);
+
+Route::get('/salas', [SalaApiController::class, 'index']);
+Route::get('/salas/{id}', [SalaApiController::class, 'show']);
+
+// ============================================
+// ROTAS PROTEGIDAS (requer autenticação)
+// ============================================
+
+Route::middleware('auth:sanctum')->group(function () {
+    
+    // Rotas de autenticação autenticadas
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout-all', [AuthController::class, 'logoutAll']);
+    Route::get('/me', [AuthController::class, 'me']);
+
+    // ============================================
+    // ROTAS DE USUÁRIOS
+    // Usuários podem gerenciar apenas seus próprios dados
+    // Admin pode gerenciar todos
+    // ============================================
+    Route::apiResource('users', UserApiController::class);
+
+    // ============================================
+    // ROTAS DE SALAS
+    // Professores e Admins têm acesso total
+    // ============================================
+    Route::middleware('can:manage-salas')->group(function () {
+        Route::post('/salas', [SalaApiController::class, 'store']);
+        Route::put('/salas/{id}', [SalaApiController::class, 'update']);
+        Route::delete('/salas/{id}', [SalaApiController::class, 'destroy']);
+    });
+
+    // ============================================
+    // ROTAS DE PROFESSORES E ADMINISTRADORES
+    // Apenas ADMIN tem acesso total
+    // ============================================
+    Route::middleware('can:admin-only')->group(function () {
+        // Professores
+        Route::post('/professores', [ProfessorApiController::class, 'store']);
+        Route::put('/professores/{id}', [ProfessorApiController::class, 'update']);
+        Route::delete('/professores/{id}', [ProfessorApiController::class, 'destroy']);
+
+        // Administradores
+        Route::post('/administradores', [AdministradorApiController::class, 'store']);
+        Route::put('/administradores/{id}', [AdministradorApiController::class, 'update']);
+        Route::delete('/administradores/{id}', [AdministradorApiController::class, 'destroy']);
+    });
+});
