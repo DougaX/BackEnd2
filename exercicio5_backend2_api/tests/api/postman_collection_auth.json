@@ -1,0 +1,621 @@
+{
+  "info": {
+    "_postman_id": "auth-backend2-ex5",
+    "name": "API Backend2 - Exercicio 5 - Autenticacao",
+    "description": "Collection completa com autenticacao e autorizacao usando Laravel Sanctum",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "admin_email",
+      "value": "admin@example.com",
+      "type": "string"
+    },
+    {
+      "key": "admin_password",
+      "value": "password",
+      "type": "string"
+    },
+    {
+      "key": "professor_email",
+      "value": "professor@example.com",
+      "type": "string"
+    },
+    {
+      "key": "professor_password",
+      "value": "password",
+      "type": "string"
+    },
+    {
+      "key": "user_email",
+      "value": "user@example.com",
+      "type": "string"
+    },
+    {
+      "key": "user_password",
+      "value": "password",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login - Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.collectionVariables.set('token', jsonData.token);",
+                  "    console.log('Token salvo:', jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{admin_email}}\",\n    \"password\": \"{{admin_password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": ["{{base_url}}"],
+              "path": ["login"]
+            }
+          }
+        },
+        {
+          "name": "Login - Professor",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.collectionVariables.set('token', jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{professor_email}}\",\n    \"password\": \"{{professor_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": ["{{base_url}}"],
+              "path": ["login"]
+            }
+          }
+        },
+        {
+          "name": "Login - User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.collectionVariables.set('token', jsonData.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{user_email}}\",\n    \"password\": \"{{user_password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": ["{{base_url}}"],
+              "path": ["login"]
+            }
+          }
+        },
+        {
+          "name": "Me - Usuario Autenticado",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/me",
+              "host": ["{{base_url}}"],
+              "path": ["me"]
+            }
+          }
+        },
+        {
+          "name": "Logout - Token Atual",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/logout",
+              "host": ["{{base_url}}"],
+              "path": ["logout"]
+            }
+          }
+        },
+        {
+          "name": "Logout All - Todos os Tokens",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/logout-all",
+              "host": ["{{base_url}}"],
+              "path": ["logout-all"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Listar Usuarios (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users",
+              "host": ["{{base_url}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Ver Usuario",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/1",
+              "host": ["{{base_url}}"],
+              "path": ["users", "1"]
+            }
+          }
+        },
+        {
+          "name": "Criar Usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Novo Usuario\",\n    \"email\": \"novo@example.com\",\n    \"password\": \"password123\",\n    \"role\": \"user\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users",
+              "host": ["{{base_url}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar Usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Usuario Atualizado\",\n    \"email\": \"atualizado@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/users/4",
+              "host": ["{{base_url}}"],
+              "path": ["users", "4"]
+            }
+          }
+        },
+        {
+          "name": "Deletar Usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/users/4",
+              "host": ["{{base_url}}"],
+              "path": ["users", "4"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Professores",
+      "item": [
+        {
+          "name": "Listar Professores (Publico)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/professores",
+              "host": ["{{base_url}}"],
+              "path": ["professores"]
+            }
+          }
+        },
+        {
+          "name": "Ver Professor (Publico)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/professores/1",
+              "host": ["{{base_url}}"],
+              "path": ["professores", "1"]
+            }
+          }
+        },
+        {
+          "name": "Criar Professor (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\": \"Dr. Novo Professor\",\n    \"email\": \"novoprof@universidade.com\",\n    \"departamento\": \"Matematica\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/professores",
+              "host": ["{{base_url}}"],
+              "path": ["professores"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar Professor (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\": \"Dr. Professor Atualizado\",\n    \"departamento\": \"Fisica\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/professores/1",
+              "host": ["{{base_url}}"],
+              "path": ["professores", "1"]
+            }
+          }
+        },
+        {
+          "name": "Deletar Professor (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/professores/1",
+              "host": ["{{base_url}}"],
+              "path": ["professores", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Salas",
+      "item": [
+        {
+          "name": "Listar Salas (Publico)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salas",
+              "host": ["{{base_url}}"],
+              "path": ["salas"]
+            }
+          }
+        },
+        {
+          "name": "Ver Sala (Publico)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/salas/1",
+              "host": ["{{base_url}}"],
+              "path": ["salas", "1"]
+            }
+          }
+        },
+        {
+          "name": "Criar Sala (Professor/Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\": \"Lab Novo\",\n    \"capacidade\": 40,\n    \"localizacao\": \"Bloco C - 2 Andar\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/salas",
+              "host": ["{{base_url}}"],
+              "path": ["salas"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar Sala (Professor/Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"capacidade\": 50,\n    \"localizacao\": \"Bloco C - 3 Andar\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/salas/1",
+              "host": ["{{base_url}}"],
+              "path": ["salas", "1"]
+            }
+          }
+        },
+        {
+          "name": "Deletar Sala (Professor/Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/salas/1",
+              "host": ["{{base_url}}"],
+              "path": ["salas", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Administradores",
+      "item": [
+        {
+          "name": "Listar Administradores (Publico)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/administradores",
+              "host": ["{{base_url}}"],
+              "path": ["administradores"]
+            }
+          }
+        },
+        {
+          "name": "Criar Administrador (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\": \"Novo Admin\",\n    \"email\": \"novoadmin@example.com\",\n    \"senha\": \"senha123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/administradores",
+              "host": ["{{base_url}}"],
+              "path": ["administradores"]
+            }
+          }
+        },
+        {
+          "name": "Atualizar Administrador (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nome\": \"Admin Atualizado\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/administradores/1",
+              "host": ["{{base_url}}"],
+              "path": ["administradores", "1"]
+            }
+          }
+        },
+        {
+          "name": "Deletar Administrador (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/administradores/1",
+              "host": ["{{base_url}}"],
+              "path": ["administradores", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
