@@ -41,4 +41,4 @@ class DatabaseSeeder extends Seeder
             SalaSeeder::class,
         ]);
     }
-}
+} 
