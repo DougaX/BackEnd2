@@ -24,4 +24,4 @@ class AppServiceProvider extends ServiceProvider
             return $user->isProfessor() || $user->isAdmin();
         });
     }
-}
+}   
